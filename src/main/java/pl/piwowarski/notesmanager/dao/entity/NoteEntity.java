@@ -4,8 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "NOTES")
 public class NoteEntity {
 
     @Id
@@ -15,6 +17,12 @@ public class NoteEntity {
     private String title;
 
     private String content;
+
+    public NoteEntity(Long id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
 
     public NoteEntity() {
 

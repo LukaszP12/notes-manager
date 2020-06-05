@@ -34,12 +34,14 @@ public class NoteService {
     public List<NoteModel> list() {
         LOGGER.info("Listing All Notes");
         List<NoteEntity> entities = noteRepository.findAll();
-        return notes;
+        return noteMapper.fromEntities(entities);
     }
 
     public NoteModel create(NoteModel noteModel) {
-         notes.add(noteModel);
-         return noteModel;
+        NoteEntity noteEntity = noteMapper.fromModel(noteModel);
+        NoteEntity savedNoteEntity = noteRepository.save(noteEntity);
+        //notes.add(noteModel);
+        return noteMapper.fromEntity(savedNoteEntity);
     }
 
     public NoteModel read(@PathVariable(name = "id") Long id) {
@@ -57,22 +59,31 @@ public class NoteService {
     }
 
     public NoteModel update(@PathVariable(name = "id") Long id, @RequestBody NoteModel noteModel) {
-        for (NoteModel note : notes){
-            if (note.getId().equals(id)){
-                note.setTitle(noteModel.getTitle());
-                note.setContent(noteModel.getContent());
-                return note;
-            }
-        }
-        return noteModel;
+
+        NoteEntity noteEntity = noteMapper.fromModel(noteModel);
+        NoteEntity savedNoteEntity = noteRepository.save(noteEntity);
+
+//        for (NoteModel note : notes) {
+//            if (note.getId().equals(id)) {
+//                note.setTitle(noteModel.getTitle());
+//                note.setContent(noteModel.getContent());
+//                return note;
+//            }
+//        }
+
+        return noteMapper.fromEntity(savedNoteEntity);
     }
 
     public void delete(@PathVariable(name = "id") Long id) {
-        for (NoteModel note : notes){
-            if (note.getId().equals(id)){
-                notes.remove(note);
-            }
-        }
+        noteRepository.deleteById(id);
+
+//
+//        for (NoteModel note : notes) {
+//            if (note.getId().equals(id)) {
+//                notes.remove(note);
+//            }
+//        }
+
     }
 
 
