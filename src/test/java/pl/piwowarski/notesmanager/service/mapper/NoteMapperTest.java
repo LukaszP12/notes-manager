@@ -50,6 +50,15 @@ class NoteMapperTest {
         Assertions.assertEquals(entities.size(),noteModels.size(), "Sizes are not equal");
     }
 
+    void fromModel() {
+        //GIVEN
+        NoteMapper noteMapper = new NoteMapper();
+
+        //WHEN
+
+        //THEN
+    }
+
     @Test
     void given_When_Then() {
         //GIVEN

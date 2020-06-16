@@ -1,16 +1,14 @@
 package pl.piwowarski.notesmanager.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import pl.piwowarski.notesmanager.dao.entity.NoteEntity;
 import pl.piwowarski.notesmanager.dao.repository.NoteRepository;
 import pl.piwowarski.notesmanager.service.mapper.NoteMapper;
 import pl.piwowarski.notesmanager.web.controller.NoteController;
 import pl.piwowarski.notesmanager.web.model.NoteModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -20,12 +18,11 @@ public class NoteService {
 
     private static final Logger LOGGER = Logger.getLogger(NoteController.class.getName());
 
-    private List<NoteModel> notes = new ArrayList<>();
+    private final NoteRepository noteRepository;
 
-    private NoteRepository noteRepository;
+    private final NoteMapper noteMapper;
 
-    private NoteMapper noteMapper;
-
+    @Autowired
     public NoteService(NoteRepository noteRepository, NoteMapper noteMapper) {
         this.noteRepository = noteRepository;
         this.noteMapper = noteMapper;
@@ -40,50 +37,31 @@ public class NoteService {
     public NoteModel create(NoteModel noteModel) {
         NoteEntity noteEntity = noteMapper.fromModel(noteModel);
         NoteEntity savedNoteEntity = noteRepository.save(noteEntity);
-        //notes.add(noteModel);
         return noteMapper.fromEntity(savedNoteEntity);
     }
 
-    public NoteModel read(@PathVariable(name = "id") Long id) {
+    public NoteModel read(Long id) {
         LOGGER.info("Reading note with id: " + id);
 
-//        Optional<NoteModel> optionalNoteModel = notes.stream()
-//                .filter(note -> note.getId().equals(id))
-//                .findFirst();
-
-//        return optionalNoteModel.orElse(new NoteModel()); // FIXME użyć orElseThrow
+//      return optionalNoteModel.orElse(new NoteModel()); // FIXME użyć orElseThrow
 
         Optional<NoteEntity> optionalNoteEntity = noteRepository.findById(id);
         NoteEntity noteEntity = optionalNoteEntity.orElse(new NoteEntity());
         return noteMapper.fromEntity(noteEntity);
     }
 
-    public NoteModel update(@PathVariable(name = "id") Long id, @RequestBody NoteModel noteModel) {
+    public NoteModel update(Long id, NoteModel noteModel) {
+        LOGGER.info("Updating note with Id: " + id + " new note " + noteModel);
 
         NoteEntity noteEntity = noteMapper.fromModel(noteModel);
         NoteEntity savedNoteEntity = noteRepository.save(noteEntity);
 
-//        for (NoteModel note : notes) {
-//            if (note.getId().equals(id)) {
-//                note.setTitle(noteModel.getTitle());
-//                note.setContent(noteModel.getContent());
-//                return note;
-//            }
-//        }
-
         return noteMapper.fromEntity(savedNoteEntity);
     }
 
-    public void delete(@PathVariable(name = "id") Long id) {
+    public void delete(Long id) {
+        LOGGER.info("Deleting note with Id: " + id);
         noteRepository.deleteById(id);
-
-//
-//        for (NoteModel note : notes) {
-//            if (note.getId().equals(id)) {
-//                notes.remove(note);
-//            }
-//        }
-
     }
 
 
