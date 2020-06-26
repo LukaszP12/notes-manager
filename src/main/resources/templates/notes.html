@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista notatek</title>
+</head>
+<body>
+
+<div>
+    <h1>Lista notatek</h1>
+<!--    <div th:text="${notes}"></div>-->
+    <div th:each="note : ${notes}">
+        Note title: <span th:text="${note.title}"></span>
+        Note content: <span th:text="${note.content}"></span>
+
+    </div>
+</div>
+
+</body>
+</html>

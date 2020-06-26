@@ -31,6 +31,11 @@ public class NoteService {
     public List<NoteModel> list() {
         LOGGER.info("Listing All Notes");
         List<NoteEntity> entities = noteRepository.findAll();
+//        return Arrays.asList(
+//                new NoteModel(1L,"Note about Java","Java is object oriented programming"),
+//                new NoteModel(2L,"Note about Thymeleaf","Thymeleaf is template framework")
+//        );
+
         return noteMapper.fromEntities(entities);
     }
 
